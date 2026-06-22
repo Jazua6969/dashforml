@@ -42,40 +42,47 @@
 }
 
 .dark {
-  --background: #F4F5F7;
-  --foreground: #1A1F2E;
-  --card: #FFFFFF;
-  --card-foreground: #1A1F2E;
-  --popover: #FFFFFF;
-  --popover-foreground: #1A1F2E;
-  --primary: #1B4F8A;
+  --background: #0F1117;
+  --foreground: #E8EAF0;
+  --card: #1A1F2E;
+  --card-foreground: #E8EAF0;
+  --popover: #1A1F2E;
+  --popover-foreground: #E8EAF0;
+  --primary: #4A90D9;
   --primary-foreground: #FFFFFF;
-  --secondary: #F4F5F7;
-  --secondary-foreground: #1A1F2E;
-  --muted: #E2E6EA;
-  --muted-foreground: #6B7280;
-  --accent: #2E7D5E;
+  --secondary: #1E2535;
+  --secondary-foreground: #E8EAF0;
+  --muted: #252D3D;
+  --muted-foreground: #8B93A7;
+  --accent: #3DA373;
   --accent-foreground: #FFFFFF;
-  --destructive: #B91C1C;
+  --destructive: #E05252;
   --destructive-foreground: #FFFFFF;
-  --border: #E2E6EA;
-  --input: #FFFFFF;
-  --ring: rgba(27, 79, 138, 0.4);
+  --border: #2A3244;
+  --input: #1A1F2E;
+  --input-background: #1A1F2E;
+  --switch-background: #252D3D;
+  --ring: rgba(74, 144, 217, 0.4);
   --font-weight-medium: 600;
   --font-weight-normal: 400;
-  --chart-1: #1B4F8A;
-  --chart-2: #2E7D5E;
-  --chart-3: #C87A1A;
-  --chart-4: #B91C1C;
-  --chart-5: #6B7280;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1A1F2E;
-  --sidebar-primary: #1B4F8A;
+  --chart-1: #4A90D9;
+  --chart-2: #3DA373;
+  --chart-3: #E0943A;
+  --chart-4: #E05252;
+  --chart-5: #8B93A7;
+  --sidebar: #1A1F2E;
+  --sidebar-foreground: #E8EAF0;
+  --sidebar-primary: #4A90D9;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F4F5F7;
-  --sidebar-accent-foreground: #1B4F8A;
-  --sidebar-border: #E2E6EA;
-  --sidebar-ring: rgba(27, 79, 138, 0.4);
+  --sidebar-accent: #252D3D;
+  --sidebar-accent-foreground: #4A90D9;
+  --sidebar-border: #2A3244;
+  --sidebar-ring: rgba(74, 144, 217, 0.4);
+}
+
+/* Smooth theme transition on all elements */
+*, *::before, *::after {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease, box-shadow 0.25s ease;
 }
 
 @theme inline {
@@ -181,22 +188,22 @@
 }
 
 @utility glass-panel {
-  background: #FFFFFF;
-  border: 1px solid #E2E6EA;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
 @utility glass-panel-glow {
-  background: #FFFFFF;
-  border: 1px solid #E2E6EA;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
 @utility glass-panel-accent {
-  background: #FFFFFF;
-  border: 1px solid #E2E6EA;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }

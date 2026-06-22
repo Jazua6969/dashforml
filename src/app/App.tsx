@@ -44,6 +44,8 @@ import {
   AlertCircle,
   Trash2,
   RefreshCw,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Toaster, toast } from "sonner";
 
@@ -191,6 +193,17 @@ export default function App() {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [themeMode, setThemeMode] = useState<ThemeKey>("cyber");
   const [telemetrySpeed, setTelemetrySpeed] = useState<"slow" | "normal" | "fast">("normal");
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  // Toggle dark class on <html>
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [isDark]);
 
   // Dynamic Telemetry State
   const [machines, setMachines] = useState<Machine[]>(MACHINE_METRICS);
@@ -482,12 +495,28 @@ export default function App() {
           <div className="flex items-center gap-6">
             {/* Live Indicator */}
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-accent" />
+              <span className="h-2 w-2 rounded-full bg-accent animate-live-dot" />
               <span className="font-mono text-[10px] text-accent tracking-widest uppercase">Live control</span>
             </div>
 
             {/* Time Feed */}
             <span className="font-mono text-xs text-[#6B7280]">{timeStr}</span>
+
+            {/* Dark / Light Toggle */}
+            <button
+              title={isDark ? "Switch to Light mode" : "Switch to Dark mode"}
+              onClick={() => { playBeep("click", soundEnabled); setIsDark((d) => !d); }}
+              className="w-8 h-8 rounded-lg flex items-center justify-center border transition-all hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: isDark ? "#252D3D" : "#F4F5F7",
+                borderColor: isDark ? "#2A3244" : "#E2E6EA",
+                color: isDark ? "#4A90D9" : "#6B7280",
+              }}
+            >
+              {isDark
+                ? <Sun className="w-3.5 h-3.5" />
+                : <Moon className="w-3.5 h-3.5" />}
+            </button>
 
             {/* Language Toggle */}
             <div className="flex bg-muted p-0.5 rounded-full border border-border">
@@ -544,26 +573,26 @@ export default function App() {
               <div className="h-full flex flex-col gap-4 p-4 overflow-hidden animate-fade-in">
                 
                 {/* TOP ROW: 4 Clean & Professional KPI Cards */}
-                <div className="grid grid-cols-4 gap-4 shrink-0">
+                <div className="grid grid-cols-4 gap-4 shrink-0 stagger-children">
                   
                   {/* KPI 1: EFFICIENCY */}
-                  <div className="glass-panel p-4 flex flex-col justify-between transition-all border-l-4 border-l-[#1B4F8A] shadow-sm bg-white">
+                  <div className="glass-panel p-4 flex flex-col justify-between transition-all border-l-4 border-l-[#1B4F8A] shadow-sm bg-white animate-fade-in">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[13px] font-semibold text-[#6B7280] font-sans">Overall Operations Efficiency</span>
                       <Activity className="w-4 h-4 text-[#1B4F8A]" />
                     </div>
-                    <div className="flex items-baseline gap-2 mt-2">
+                    <div className="flex items-baseline gap-2 mt-2 animate-count-in">
                       <span className="text-[36px] font-bold text-[#1B4F8A] leading-none font-sans">{avgEfficiency}%</span>
                       <span className="text-[12px] font-sans text-[#2E7D5E] font-medium">OEE Yield</span>
                     </div>
                     <div className="mt-3.5 h-1.5 bg-[#EEF1F5] rounded-full overflow-hidden">
-                      <div className="h-full rounded-full bg-[#2E7D5E]" style={{ width: `${avgEfficiency}%` }} />
+                      <div className="h-full rounded-full bg-[#2E7D5E] animate-bar-grow" style={{ width: `${avgEfficiency}%` }} />
                     </div>
                     <div className="text-[11px] font-sans text-[#6B7280] mt-2 text-right">Target benchmark: 90%</div>
                   </div>
 
                   {/* KPI 2: BOTTLENECKS */}
-                  <div className="glass-panel p-4 flex flex-col justify-between transition-all border-l-4 border-l-[#C87A1A] shadow-sm bg-white">
+                  <div className="glass-panel p-4 flex flex-col justify-between transition-all border-l-4 border-l-[#C87A1A] shadow-sm bg-white animate-fade-in">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[13px] font-semibold text-[#6B7280] font-sans">Throughput Bottlenecks</span>
                       <Zap className="w-4 h-4 text-[#C87A1A]" />
@@ -573,8 +602,8 @@ export default function App() {
                       <span className="text-[12px] font-sans text-[#6B7280]">Flow Rate</span>
                     </div>
                     <div className="mt-3.5 h-1.5 bg-[#EEF1F5] rounded-full overflow-hidden flex">
-                      <div className="h-full bg-[#1B4F8A]" style={{ width: `${currentFlow}%` }} />
-                      <div className="h-full bg-[#B91C1C]" style={{ width: `${currentBlock}%` }} />
+                      <div className="h-full bg-[#1B4F8A] animate-bar-grow" style={{ width: `${currentFlow}%` }} />
+                      <div className="h-full bg-[#B91C1C] animate-bar-grow" style={{ width: `${currentBlock}%`, animationDelay: '0.2s' }} />
                     </div>
                     <div className="text-[11px] font-sans text-[#6B7280] mt-2 flex justify-between">
                       <span>Blockage Risk: {currentBlock}%</span>
@@ -583,7 +612,7 @@ export default function App() {
                   </div>
 
                   {/* KPI 3: PILFERAGE & SECURITY */}
-                  <div className="glass-panel p-4 flex flex-col justify-between transition-all shadow-sm bg-white"
+                  <div className="glass-panel p-4 flex flex-col justify-between transition-all shadow-sm bg-white animate-fade-in"
                        style={{ borderLeft: pilferageCount > 0 ? "4px solid #B91C1C" : "4px solid #2E7D5E" }}>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[13px] font-semibold text-[#6B7280] font-sans">Asset Pilferage & Security</span>
@@ -613,7 +642,7 @@ export default function App() {
                   </div>
 
                   {/* KPI 4: DEFECTS */}
-                  <div className="glass-panel p-4 flex flex-col justify-between transition-all shadow-sm bg-white"
+                  <div className="glass-panel p-4 flex flex-col justify-between transition-all shadow-sm bg-white animate-fade-in"
                        style={{ borderLeft: defectCount > 0 ? "4px solid #C87A1A" : "4px solid #2E7D5E" }}>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[13px] font-semibold text-[#6B7280] font-sans">Quality Defects & Inspection</span>
@@ -669,7 +698,7 @@ export default function App() {
 
                     {/* Machine Telemetry Float Box */}
                     {selectedMachineId && (
-                      <div className="absolute bottom-4 left-4 w-72 glass-panel border border-[#E2E6EA] bg-white p-4 z-30 shadow-lg animate-slide-up">
+                      <div className="absolute bottom-4 left-4 w-72 border border-[#E2E6EA] bg-white p-4 z-30 shadow-lg rounded-lg animate-slide-up" style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}>
                         {(() => {
                           const mach = machines.find((m) => m.id === selectedMachineId);
                           if (!mach) return null;
@@ -1474,7 +1503,7 @@ export default function App() {
                     <div className="absolute top-0 inset-x-0 bg-[#F4F5F7]/95 backdrop-blur-sm p-2 flex items-center justify-between border-b border-[#E2E6EA] z-20">
                       <span className="font-sans text-[10px] font-bold text-[#1A1F2E]">{title}</span>
                       <div className="flex items-center gap-1.5">
-                        <span className={`w-1.5 h-1.5 rounded-full ${locked ? "bg-[#B91C1C]" : "bg-[#2E7D5E]"}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full ${locked ? "bg-[#B91C1C]" : "bg-[#2E7D5E] animate-live-dot"}`} />
                         <span className="font-sans text-[9px] text-[#6B7280] font-semibold">{locked ? "LOCKDOWN" : "LIVE FEED"}</span>
                       </div>
                     </div>
@@ -1559,11 +1588,14 @@ export default function App() {
                 {/* Scrolling Console */}
                 <div className="flex-1 bg-[#F4F5F7] p-3 overflow-y-auto font-mono text-[10px] text-[#1A1F2E] space-y-2 leading-relaxed">
                   {accessLogs.map((log, i) => (
-                    <div key={i} className={`border-l-2 pl-2 py-0.5 rounded-r shadow-xs ${
-                      log.includes("DENIED") || log.includes("WARNING")
-                        ? "border-[#B91C1C] text-[#B91C1C] bg-[#FEE2E2]/40"
-                        : "border-[#2E7D5E]/30 text-[#6B7280] bg-white/60"
-                    }`}>
+                    <div
+                      key={i}
+                      className={`border-l-2 pl-2 py-0.5 rounded-r shadow-xs ${
+                        log.includes("DENIED") || log.includes("WARNING")
+                          ? "border-[#B91C1C] text-[#B91C1C] bg-[#FEE2E2]/40"
+                          : "border-[#2E7D5E]/30 text-[#6B7280] bg-white/60"
+                      } ${i === 0 ? "animate-log-entry" : ""}`}
+                    >
                       {log}
                     </div>
                   ))}
